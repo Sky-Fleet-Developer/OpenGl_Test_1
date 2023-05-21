@@ -12,8 +12,10 @@ namespace OpenGLTest
         private static ShaderAsset fragmentShader = new ShaderAsset("Resources/FragmentShader.shader");
         private static ShaderProgram program;
         private static VBO<Vector3> triangleVerts, squareVerts;
+        private static VBO<Vector3> triangleColors, squareColors;
         private static VBO<int> triangleElements, squareElements;
-        private static Matrix4 modelMatrix = Matrix4.CreateTranslation(new Vector3(-1.5f, 0, 0));
+        private static Matrix4 triagleModelMatrix = Matrix4.CreateTranslation(new Vector3(-1.5f, 0, 0));
+        private static Matrix4 squereModelMatrix = Matrix4.CreateTranslation(new Vector3(1.5f, 0, 0));
 
         static void Main(string[] args)
         {
@@ -43,6 +45,9 @@ namespace OpenGLTest
             squareVerts = new VBO<Vector3>(new Vector3[] { new Vector3(-1, 1, 0), new Vector3(1, 1, 0), new Vector3(1, -1, 0), new Vector3(-1, -1, 0) });
             triangleElements = new VBO<int>(new int[] { 0, 1, 2 }, BufferTarget.ElementArrayBuffer);
             squareElements = new VBO<int>(new int[] { 0, 1, 2, 3 }, BufferTarget.ElementArrayBuffer);
+            float dark = 0.3f;
+            triangleColors = new VBO<Vector3>(new Vector3[] { new Vector3(1, dark, dark), new Vector3(dark, 1, dark), new Vector3(dark, dark, 1) });
+            squareColors = new VBO<Vector3>(new Vector3[] { new Vector3(1, dark, dark), new Vector3(dark, 1, dark), new Vector3(dark, dark, 1), new Vector3(dark, dark, dark) });
         }
 
         private static void LoadShaders()
@@ -62,15 +67,23 @@ namespace OpenGLTest
 
             program.Use();
 
-            program["model_matrix"].SetValue(modelMatrix);
+            program["model_matrix"].SetValue(triagleModelMatrix);
 
             uint vertexPositionIndex = (uint)Gl.GetAttribLocation(program.ProgramID, "vertexPosition");
             Gl.EnableVertexAttribArray(vertexPositionIndex);
             Gl.BindBuffer(triangleVerts);
             Gl.VertexAttribPointer(vertexPositionIndex, triangleVerts.Size, triangleVerts.PointerType, true, sizeof(float) * 3, IntPtr.Zero);
+            Gl.BindBufferToShaderAttribute(triangleColors, program, "vertexColor");
             Gl.BindBuffer(triangleElements);
 
             Gl.DrawElements(BeginMode.Triangles, triangleElements.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
+
+            program["model_matrix"].SetValue(squereModelMatrix);
+            Gl.BindBufferToShaderAttribute(squareVerts, program, "vertexPosition");
+            Gl.BindBufferToShaderAttribute(squareColors, program, "vertexColor");
+            Gl.BindBuffer(squareElements);
+
+            Gl.DrawElements(BeginMode.Quads, squareElements.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
 
             Glut.glutSwapBuffers();
         }
