@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenGLTest.Shaders
+namespace OpenGl_Test_1
 {
     internal class ShaderAsset
     {
@@ -13,7 +13,7 @@ namespace OpenGLTest.Shaders
         public ShaderAsset(string path)
         {
             this.path = path;
-            this.text = string.Empty;
+            text = string.Empty;
         }
 
         public void Load()
@@ -32,7 +32,7 @@ namespace OpenGLTest.Shaders
             }
             catch (Exception exceprion)
             {
-                Console.WriteLine(exceprion.Message); 
+                Console.WriteLine(exceprion.Message);
             }
 
         }

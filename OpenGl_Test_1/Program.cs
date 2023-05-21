@@ -1,8 +1,7 @@
 ﻿using OpenGL;
-using OpenGLTest.Shaders;
 using Tao.FreeGlut;
 
-namespace OpenGLTest
+namespace OpenGl_Test_1
 {
     class Program
     {
@@ -22,6 +21,7 @@ namespace OpenGLTest
             Glut.glutInitDisplayMode(Glut.GLUT_DOUBLE | Glut.GLUT_DEPTH);
             Glut.glutInitWindowSize(width, height);
             Glut.glutCreateWindow("OpenGl Test");
+            Glut.glutCloseFunc(OnClose);
 
             Glut.glutIdleFunc(OnRenderFrame);
             Glut.glutDisplayFunc(OnDisplay);
@@ -87,6 +87,15 @@ namespace OpenGLTest
             Gl.DrawElements(BeginMode.Triangles, triangleElements.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
 
             Glut.glutSwapBuffers();
+        }
+
+        private static void OnClose()
+        {
+            triangleVerts.Dispose();
+            triangleElements.Dispose();
+            triangleColors.Dispose();
+            program.DisposeChildren = true;
+            program.Dispose();
         }
     }
 }
