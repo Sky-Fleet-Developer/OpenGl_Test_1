@@ -1,6 +1,5 @@
 ﻿using OpenGL;
 using OpenGLTest.Shaders;
-using System;
 using Tao.FreeGlut;
 
 namespace OpenGLTest
@@ -16,6 +15,7 @@ namespace OpenGLTest
         private static VBO<int> triangleElements, squareElements;
         private static Matrix4 triagleModelMatrix = Matrix4.CreateTranslation(new Vector3(-1.5f, 0, 0));
         private static Matrix4 squereModelMatrix = Matrix4.CreateTranslation(new Vector3(1.5f, 0, 0));
+        private static float degToRad = 3.14f / 180f;
 
         static void Main(string[] args)
         {
@@ -36,7 +36,19 @@ namespace OpenGLTest
 
             LoadMeshes();
 
-            Glut.glutMainLoop(); 
+            UpdateLoop(0.016f);
+
+            Glut.glutMainLoop();
+        }
+
+        private async static void UpdateLoop(float deltaTime)
+        {
+            int dtInMs = (int)(deltaTime * 1000);
+            while (true)
+            {
+                await Task.Delay(dtInMs);
+                triagleModelMatrix = Matrix4.CreateRotationY(10 * deltaTime * degToRad) * triagleModelMatrix;
+            }
         }
         
         private static void LoadMeshes()
