@@ -21,6 +21,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Shaders\" />
+  </ItemGroup>
+
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="call postbuild.bat $(ProjectDir) $(TargetDir)" />
   </Target>
