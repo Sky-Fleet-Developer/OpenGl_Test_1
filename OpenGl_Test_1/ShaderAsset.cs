@@ -9,7 +9,7 @@ namespace OpenGl_Test_1
     internal class ShaderAsset
     {
         private string path;
-        private string text;
+        public string text;
         public ShaderAsset(string path)
         {
             this.path = path;

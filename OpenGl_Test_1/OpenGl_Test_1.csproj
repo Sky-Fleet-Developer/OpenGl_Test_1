@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Shaders\**" />
+    <EmbeddedResource Remove="Shaders\**" />
+    <None Remove="Shaders\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
@@ -21,9 +27,9 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Shaders\" />
-  </ItemGroup>
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="call beforebuild.bat $(TargetDir)" />
+  </Target>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="call postbuild.bat $(ProjectDir) $(TargetDir)" />
