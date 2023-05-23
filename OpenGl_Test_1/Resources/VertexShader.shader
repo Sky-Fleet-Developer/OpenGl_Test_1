@@ -1,19 +1,26 @@
-﻿#version 130
+﻿#version 150
 
 in vec3 vert_position;
 in vec3 vert_normal;
 in vec2 vert_uv;
 
-out vec3 nrm;
-out vec2 uv;
+out VS_OUT
+{
+	vec4 pos;
+	vec3 nrm;
+	vec2 uv;
+} vs_out;
 
 uniform mat4 projection_matrix;
 uniform mat4 view_matrix;
 uniform mat4 model_matrix;
+uniform vec3 lightDirection;
+uniform vec2 time;
 
 void main(void)
 {
-	nrm = normalize((model_matrix * vec4(vert_normal, 0)).xyz);
-	uv = vert_uv;
-	gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vert_position, 1);
+	vs_out.nrm = normalize((model_matrix * vec4(vert_normal, 0)).xyz);
+	vs_out.uv = vert_uv;
+	vs_out.pos = model_matrix * vec4(vert_position, 1);
+	gl_Position = projection_matrix * view_matrix * vs_out.pos;
 }

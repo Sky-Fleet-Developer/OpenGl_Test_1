@@ -18,7 +18,7 @@ namespace OpenGl_Test_1
         private static Texture texture;
         private static Matrix4 triagleModelMatrix = Matrix4.CreateTranslation(new Vector3(0, -0.5f, 0));
         private static float degToRad = 3.14f / 180f;
-
+        private static double startTime;
         static void Main(string[] args)
         {
             CultureInfo.CurrentCulture = new CultureInfo("en-US");
@@ -38,8 +38,12 @@ namespace OpenGl_Test_1
             program = new ShaderProgram(vertShader, fragShader);
             program.Use();
             program["projection_matrix"].SetValue(Matrix4.CreatePerspectiveFieldOfView(0.45f, (float)width / height, 0.1f, 1000f));
-            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, 10), Vector3.Zero, new Vector3(0, 1, 0)));
-            program["light_direction"].SetValue(new Vector3(0, 0, 1));
+            program["view_matrix"].SetValue(Matrix4.LookAt(new Vector3(0, 0, -10), Vector3.Zero, new Vector3(0, 1, 0)));
+            try
+            {
+                program["lightDirection"].SetValue(new Vector3(-1, -1, 0.7f).Normalize());
+                program["lightDirection2"].SetValue(new Vector3(1, 1, -.2f).Normalize());
+            }catch(Exception e) { }
 
             LoadMeshes();
             LoadTextures();
@@ -47,6 +51,8 @@ namespace OpenGl_Test_1
             Gl.UseProgram(program);
             Gl.BindTexture(texture);
             mesh.SetBuffers(program);
+            startTime = DateTime.Now.TimeOfDay.TotalSeconds;
+
             UpdateLoop(0.016f);
 
             Glut.glutMainLoop();
@@ -85,9 +91,8 @@ namespace OpenGl_Test_1
         private static void OnRenderFrame()
         {
             Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
             program["model_matrix"].SetValue(triagleModelMatrix);
-
+            program["time"].SetValue((float)(DateTime.Now.TimeOfDay.TotalSeconds - startTime));
             mesh.DrawGl(program);
 
             Glut.glutSwapBuffers();
@@ -96,6 +101,7 @@ namespace OpenGl_Test_1
         private static void OnClose()
         {
             mesh.Dispose();
+            texture.Dispose();
             program.DisposeChildren = true;
             program.Dispose();
         }
