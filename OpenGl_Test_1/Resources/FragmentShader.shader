@@ -1,7 +1,18 @@
-﻿in vec3 color;
+﻿#version 130
+
+uniform sampler2D texture;
+uniform vec3 light_direction;
+
+in vec3 nrm;
+in vec2 uv;
+
+out vec4 fragment;
 
 void main(void)
 {
 	if(!gl_FrontFacing) discard;
-	gl_FragColor = vec4(color, 1);
+	float diffuse = max(dot(nrm, light_direction), 0);
+	float ambient = 0.3;
+	fragment = texture2D(texture, uv);
+	fragment.xyz *= max(ambient, diffuse);
 }

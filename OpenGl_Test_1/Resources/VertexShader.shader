@@ -1,7 +1,11 @@
-﻿in vec3 position;
-in vec3 normal;
+﻿#version 130
 
-varying vec3 color;
+in vec3 vert_position;
+in vec3 vert_normal;
+in vec2 vert_uv;
+
+out vec3 nrm;
+out vec2 uv;
 
 uniform mat4 projection_matrix;
 uniform mat4 view_matrix;
@@ -9,6 +13,7 @@ uniform mat4 model_matrix;
 
 void main(void)
 {
-	color = normal;// * 0.5 + vec3(0.5, 0.5, 0.5);
-	gl_Position = projection_matrix * view_matrix * model_matrix * vec4(position, 1);
+	nrm = normalize((model_matrix * vec4(vert_normal, 0)).xyz);
+	uv = vert_uv;
+	gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vert_position, 1);
 }

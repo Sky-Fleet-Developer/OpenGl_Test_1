@@ -57,7 +57,7 @@ namespace OpenGl_Test_1.Serialization
                         int[] split = triangle.Split(splitSymbol).Select(x => int.Parse(x)-1).ToArray();
                         vertices.Add(verticesSource[split[0]]);
                         uvs.Add(uvsSource[split[1]]);
-                        normals.Add(new Vector3(Random.Shared.NextSingle(), Random.Shared.NextSingle(), Random.Shared.NextSingle()));//normalsSource[split[2]]);
+                        normals.Add(normalsSource[split[2]]);
                         triangles.Add(i);
                     }
 

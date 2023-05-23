@@ -19,8 +19,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="OpenGL">
       <HintPath>libs\OpenGL.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <HintPath>libs\System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Common">
+      <HintPath>libs\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="Tao.FreeGlut">
       <HintPath>libs\Tao.FreeGlut.dll</HintPath>

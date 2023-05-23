@@ -41,12 +41,17 @@ namespace OpenGl_Test_1
 
         public void DrawGl(ShaderProgram program)
         {
-            Gl.BindBufferToShaderAttribute(vertices, program, "position");
-            Gl.BindBufferToShaderAttribute(normals, program, "normal");
-            Gl.BindBuffer(triangles);
 
             Gl.DrawElements(BeginMode.Triangles, triangles.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
             //Gl.DrawElements(BeginMode.Lines, triangles.Count, DrawElementsType.UnsignedInt, IntPtr.Zero);
+        }
+
+        public void SetBuffers(ShaderProgram program)
+        {
+            Gl.BindBufferToShaderAttribute(vertices, program, "vert_position");
+            Gl.BindBufferToShaderAttribute(normals, program, "vert_normal");
+            Gl.BindBufferToShaderAttribute(uvs, program, "vert_uv");
+            Gl.BindBuffer(triangles);
         }
 
         public void Dispose()
